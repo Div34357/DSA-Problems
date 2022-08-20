@@ -1,0 +1,129 @@
+ class Solution
+
+{
+
+public:
+
+    vector<int> v1;
+
+    vector < vector<int>> v;
+
+
+
+    vector<int> reverse(vector<int> v){
+
+        int s = 0;
+
+        int e = v.size()-1;
+
+        while(s < e){
+
+            swap(v[s], v[e]);
+
+            s++;
+
+            e--;
+
+        }
+
+        return v;
+
+    }
+
+
+
+    vector<vector<int>> zigzagLevelOrder(TreeNode *root)
+
+    {
+
+        if (root == NULL)
+
+        {
+
+            return v;
+
+        }
+
+        queue<TreeNode *> q;
+
+        q.push(root);
+
+        q.push(NULL);
+
+        bool flag = true;
+
+        
+
+        while (!q.empty())
+
+        {
+
+            TreeNode *temp = q.front();
+
+            q.pop();
+
+
+
+            if (temp == NULL)
+
+            {
+
+                if(flag == false){
+
+                v1 = reverse(v1);
+
+                }
+
+                v.push_back(v1);
+
+                if (q.empty())
+
+                {
+
+                    break;
+
+                }
+
+                else
+
+                {
+
+                    flag = !flag;
+
+                    q.push(NULL);
+
+                    v1.clear();
+
+                }
+
+            }
+
+            else{
+
+                v1.push_back(temp -> val);
+
+                // s.push(temp -> val);
+
+                if(temp -> left)
+
+                q.push(temp -> left);
+
+                if(temp -> right)
+
+                q.push(temp -> right);
+
+            }
+
+        }
+
+
+
+        
+
+
+
+        return v;
+
+    }
+
+};
