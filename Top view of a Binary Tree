@@ -1,0 +1,91 @@
+ class Solution
+
+{
+
+public:
+
+    vector<int> answer;
+
+
+
+    vector<int> topView(Node *root)
+
+    {
+
+        if (root == NULL)
+
+        {
+
+            return answer;
+
+        }
+
+
+
+        map<int, vector<int>> nodes;
+
+        queue<pair<Node*, int>> q;
+
+
+
+        q.push(make_pair(root, 0));
+
+
+
+        while (!q.empty())
+
+        {
+
+            pair <Node*, int> temp = q.front();
+
+            q.pop();
+
+
+
+            Node* current_node = temp.first;
+
+            int current_level = temp.second;
+
+
+
+            if(nodes[current_level].size() == 0){
+
+                nodes[current_level].push_back(current_node -> data);
+
+            }
+
+
+
+            if(current_node -> left){
+
+                q.push(make_pair(current_node -> left, current_level - 1));
+
+            }
+
+            if(current_node -> right){
+
+                q.push(make_pair(current_node -> right, current_level + 1));
+
+            }
+
+        }
+
+
+
+        for(auto i:nodes){
+
+            for(auto j:i.second){
+
+                answer.push_back(j);
+
+            }
+
+        }
+
+
+
+        return answer;
+
+    }
+
+};
