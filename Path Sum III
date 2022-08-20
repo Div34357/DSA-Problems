@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int count = 0;
+
+    void checkSum(vector <int> v, int targetSum){
+        int s = 0;
+        int sum = 0;
+        for(int i = 0; i < v.size(); i++){
+            sum += v[i];
+            if(sum > targetSum){
+                sum -= v[s];
+                s++;
+            }
+            if(sum == targetSum){
+                count++;
+            }
+        }
+    }
+    
+    void pathNodes(TreeNode* root, int targetSum, vector <int> v){
+        if(root == NULL){
+            return;
+        }
+
+        v.push_back(root -> val);
+        
+        pathNodes(root -> left, targetSum, v);
+        pathNodes(root -> right, targetSum, v);
+        
+        int size = v.size();
+        long long int sum = 0;
+        for(int i = size-1; i >= 0; i--){
+            sum += v[i];
+            if(sum == targetSum)
+                count++;
+        }
+
+    }
+
+    int pathSum(TreeNode* root, int targetSum) {
+        vector <int> v;
+        pathNodes(root, targetSum, v);
+        return count;
+    }
+
+};
