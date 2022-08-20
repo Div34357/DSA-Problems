@@ -1,0 +1,65 @@
+class Solution {
+
+public:
+
+    
+
+    bool checkSame(TreeNode* root, TreeNode* subRoot){
+
+        if(root == NULL && subRoot == NULL){
+
+            return true;
+
+        }
+
+        else if(root == NULL || subRoot == NULL){
+
+            return false;
+
+        }
+
+        
+
+        if(root -> val != subRoot -> val){
+
+            return false;
+
+        }
+
+        
+
+        return checkSame(root -> left, subRoot -> left) && checkSame(root -> right, subRoot -> right);
+
+    }
+
+    
+
+    bool isSubtree(TreeNode* root, TreeNode* subRoot) {
+
+        if(root == NULL && subRoot != NULL){
+
+            return false;
+
+        }
+
+        
+
+        bool isTrue = false;
+
+        
+
+        
+
+        if(root -> val == subRoot -> val){
+
+            isTrue = checkSame(root, subRoot);
+
+        }
+
+        
+
+        return isSubtree(root -> left, subRoot) || isSubtree(root -> right, subRoot) || isTrue;
+
+    }
+
+};
