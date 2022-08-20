@@ -1,0 +1,53 @@
+ class Solution {
+
+public:
+
+    int sum = 0;
+
+    
+
+    void totalSum(TreeNode* root, int flag){
+
+        if(root == NULL){
+
+            return;
+
+        }
+
+        
+
+        if(root -> left == NULL && root -> right == NULL && flag == 1){
+
+            sum += root -> val;
+
+        }
+
+        
+
+        if(root -> left){
+
+            totalSum(root -> left, 1);
+
+        }
+
+        if(root -> right){
+
+            totalSum(root -> right, 0);
+
+        }
+
+        
+
+    }
+
+    
+
+    int sumOfLeftLeaves(TreeNode* root) {
+
+        totalSum(root, 0);
+
+        return sum;
+
+    }
+
+};
