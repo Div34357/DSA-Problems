@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector <vector <int>> answer;
+
+    void allPaths(TreeNode* root, int targetSum, vector <int> pathNodes, int sum){
+        if(root == NULL){
+            return;
+        }
+
+        //adding sum of nodes to the variable sum
+        sum += root -> val;
+
+        pathNodes.push_back(root -> val);
+
+        if(root -> left == NULL && root -> right == NULL){
+            //checking if path sum is equal to target or not
+            if(sum == targetSum){
+                //if equal then push the vector to the answer vector
+                answer.push_back(pathNodes);
+            }
+            return;
+        }
+
+        allPaths(root -> left, targetSum, pathNodes, sum);
+        allPaths(root -> right, targetSum, pathNodes, sum);
+
+
+    }
+   
+    vector<vector<int>> pathSum(TreeNode* root, int targetSum) {
+        vector <int> pathNodes;
+        allPaths(root, targetSum, pathNodes, 0);
+
+        return answer;
+    }
+};
