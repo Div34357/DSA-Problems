@@ -1,0 +1,61 @@
+class Solution {
+
+public:
+
+    int sum = 0;
+
+    
+
+    int height(TreeNode* root){
+
+        if(root == NULL){
+
+            return 0;
+
+        }
+
+        return max(height(root -> left), height(root -> right)) + 1;
+
+    }
+
+
+
+    void deepestSum(TreeNode* root, int height){
+
+        if(root == NULL){
+
+            return;
+
+        }
+
+
+
+        if(height == 0){
+
+            sum += root -> val;
+
+        }
+
+
+
+        deepestSum(root -> left, height-1);
+
+        deepestSum(root -> right, height-1);
+
+    }
+
+
+
+    int deepestLeavesSum(TreeNode* root) {
+
+        int h = height(root);
+
+
+
+        deepestSum(root, h-1);
+
+        return sum;
+
+    }
+
+};
