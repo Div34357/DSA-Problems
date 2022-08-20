@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int count = 0;
+
+    pair <int, int> average(TreeNode* root){
+        if(root == NULL){
+            return {0, 0};
+        }
+        
+        //extracting sum and total nodes for left and right nodes of the root in pair
+        pair <int, int> left = average(root -> left);
+        pair <int, int> right = average(root -> right);
+        
+        //sum of left and right nodes
+        int left_sum = left.first;
+        int right_sum = right.first;
+        
+        //total nodes in left and right subtree
+        int left_nodes = left.second;
+        int right_nodes = right.second;
+        
+        //calculating total sum and nodes including root for calculating average
+        int sum = left_sum + right_sum + root -> val;
+        int total_nodes = left.second + right.second + 1;
+        
+        //taking average and checking whether it is equal to root node or not
+        int avg = (sum)/total_nodes;
+        if(avg == root -> val){
+            count++;
+        }
+
+        //returning the answer
+        pair <int, int> ans = make_pair(sum, total_nodes);
+        
+        return ans;
+    }
+
+    int averageOfSubtree(TreeNode* root) {
+        if(root == NULL){
+            return 0;
+        }
+
+        average(root);
+        return count;
+    }
+};
