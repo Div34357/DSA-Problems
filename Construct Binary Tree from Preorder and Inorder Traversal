@@ -1,0 +1,35 @@
+class Solution {
+public:
+
+    TreeNode* constructingTree(vector<int>preorder, vector<int>&inorder, int &index, int start, int end, unordered_map<int, int> &m){
+        if(start > end || index >= inorder.size()){
+            return NULL;
+        }
+
+        int element = preorder[index++];
+        
+        //creating new node
+        TreeNode* new_node = new TreeNode(element);
+        
+        //searching element in the map
+        int pos = m[element];
+        
+        //building left and right nodes of the new node
+        new_node -> left = constructingTree(preorder, inorder, index, start, pos-1, m);
+        new_node -> right = constructingTree(preorder, inorder, index, pos+1, end, m);
+
+        return new_node;
+    }
+
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int index = 0;
+
+        //creating map to store elements and corresponding index of inorder array to do search operation in O(1) time complexity
+        unordered_map<int, int> m;
+        for(int i = 0; i < inorder.size(); i++){
+            m[inorder[i]] = i;
+        }
+
+        return constructingTree(preorder, inorder, index, 0, inorder.size()-1, m);
+    }
+};
