@@ -1,0 +1,46 @@
+class Solution {
+public:
+    vector<int> largestValues(TreeNode* root) {
+        vector <int> answer;
+        
+        if(root == NULL){
+            return answer;
+        }
+        
+        //using queue for doing level order traversal
+        queue <TreeNode*> q;
+        q.push(root);
+        q.push(NULL);
+        
+        int max_in_row = INT_MIN;
+        
+        while(!q.empty()){
+            TreeNode* current_node = q.front();
+            q.pop();
+            
+            if(current_node == NULL){
+                //pushing answer in the vector which we have to return
+                answer.push_back(max_in_row);
+                max_in_row = INT_MIN; //giving smallest number to max_in_row for the next row
+                
+                if(!q.empty()){
+                    //pushing NULL so as to distinguist between the levels
+                    q.push(NULL);
+                }
+            }
+            else{
+                //calculating the max element as we traverse through the row
+                max_in_row = max(max_in_row, current_node->val);
+                
+                if(current_node->left){
+                    q.push(current_node->left);
+                }
+                if(current_node->right){
+                    q.push(current_node->right);
+                }
+            }
+        }
+        
+        return answer;
+    }
+};
