@@ -1,0 +1,47 @@
+class Solution {
+public:
+    vector <int> answer;
+    unordered_map <int, int> m;
+    
+    int findSubtree(TreeNode* root){
+        if(root == NULL){
+            return 0;
+        }
+        
+        //finding left and right subtree sum
+        int leftSum = findSubtree(root->left);
+        int rightSum = findSubtree(root->right);
+        
+        //adding the total sum of the subtree
+        int totalSum = leftSum + rightSum + root->val;
+        
+        //storing the sum and its frequency in a hash map for finding the answer
+        m[totalSum]++;
+        
+        return totalSum;
+        
+    }
+    
+    vector<int> findFrequentTreeSum(TreeNode* root) {
+        
+        findSubtree(root); //calling the function
+        
+        //finding the sum with most frequency and if found, storing it in the answer vector
+        int max_frequency = 0;
+        for(auto i:m){
+            
+            if(max_frequency < i.second)
+            {
+                answer.clear();
+                answer.push_back(i.first);
+                max_frequency = i.second;
+            }
+            else if(max_frequency == i.second)
+            {
+                answer.push_back(i.first);
+            }
+        }
+        
+        return answer;
+    }
+};
