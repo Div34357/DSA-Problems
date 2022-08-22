@@ -1,0 +1,41 @@
+class Solution {
+public:
+    
+    int heightLeft(TreeNode* root){
+        int h = 1;
+        while(root->left != NULL){
+            h++;
+            root = root->left;
+        }
+        
+        return h;
+    }
+    
+    int heightRight(TreeNode* root){
+        int h = 1;
+        while(root->right != NULL){
+            h++;
+            root = root->right;
+        }
+        
+        return h;
+    }
+    
+    int countNodes(TreeNode* root) {
+        if(root == NULL){
+            return 0;
+        }
+        
+        //checking height of left and right
+        int left = heightLeft(root);
+        int right = heightRight(root);
+        
+        //if they are same means that subtree is a complete subtree so, we don't have to traverse further for counting total nodes and we can use the below formula.
+        if(left == right){
+            return pow(2, left) - 1;
+        }
+        
+        //else height doesn't match so we have to recursively calculate both left and right heights and then return the answer
+        return countNodes(root->left) + countNodes(root->right) + 1;
+    }
+};
