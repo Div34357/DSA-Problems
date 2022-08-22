@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int answer = INT_MIN;
+    
+    void findAllPaths(TreeNode* root, int mini, int maxi)
+    {
+        if(root == NULL){
+            return;
+        }
+        
+        //finding min and max element of the path we are traversing
+        maxi = max(maxi, root->val);
+        mini = min(mini, root->val);
+        
+        //if we reach the leaf node, it means we have traversed the path, so we now find the max difference of an ancestor and its child
+        if(root->left == NULL && root->right == NULL){
+            answer = max(answer, (maxi - mini));
+        }
+        
+        findAllPaths(root->left, mini, maxi);
+        findAllPaths(root->right, mini, maxi);
+    }
+    
+    int maxAncestorDiff(TreeNode* root) {
+        
+        int mini = INT_MAX, maxi = INT_MIN;
+        findAllPaths(root, mini, maxi);
+        
+        return answer;
+    }
+};
