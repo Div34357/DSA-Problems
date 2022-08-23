@@ -1,0 +1,43 @@
+class Solution
+{
+    public:
+
+    void findLoopNode(Node* &head, Node* &fast){
+        Node* slow = head;
+
+        //the node where slow becomes equal to fast, that is the node from where loop starts
+        while(slow != fast){
+            slow = slow->next;
+            fast = fast->next;
+        }
+
+        //going to the tail node which connects to the slow node, and makes a loop, and pointing it to NULL
+        while(fast->next != slow){
+            fast = fast->next;
+        }
+        fast->next = NULL;
+    }
+
+    void removeLoop(Node* head)
+    {
+        //head is NULL
+        if(head == NULL){
+            return;
+        }
+
+        //check if loop is present
+        Node *slow = head, *fast = head;
+        while(fast != NULL && fast->next != NULL)
+        {
+            fast = fast->next->next;
+            slow = slow->next;
+
+            if(fast == slow){
+                //loop is present
+                findLoopNode(head, fast);
+                break;
+            }
+        }
+
+    }
+};
