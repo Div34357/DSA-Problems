@@ -1,0 +1,54 @@
+class Solution {
+public:
+
+    ListNode* reverseList(ListNode* head){
+        ListNode *prev = NULL, *after = NULL;
+        while(head != NULL){
+            after = head->next;
+            head->next = prev;
+            prev = head;
+            head = after;
+        }
+
+        return prev;
+    }
+    
+    bool isPalindrome(ListNode* head) {
+        //if head is NULL
+        if(head == NULL || head->next == NULL){
+            return true;
+        }
+
+        //finding size of linked list to find its middle node
+        ListNode* curr = head;
+        int size_of_list = 0;
+        while(curr != NULL)
+        {
+            curr = curr->next;
+            size_of_list++;
+        }
+
+        int middle_node = (size_of_list)/2;
+
+        //reaching the node before the middle node so ass the reverse the list from there
+        curr = head;
+        while(--middle_node){
+            curr = curr->next;
+        }
+
+        //reversing half list
+        curr->next = reverseList(curr->next);
+        
+        //now checking for palindrome, by comparing the first and second half of the list
+        ListNode* temp = curr->next;
+        while(head != curr->next){
+            if(head->val != temp->val){
+                return false;
+            }
+            head = head->next;
+            temp = temp->next;
+        }
+
+        return true;
+    }
+};
