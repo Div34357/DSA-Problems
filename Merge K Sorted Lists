@@ -1,0 +1,53 @@
+class Solution {
+public:
+    
+    void mergeLists(ListNode* &new_list, ListNode* &list)
+    {
+        ListNode* prev = new_list;
+        
+        if(list == NULL){
+            return;
+        }
+        
+        while(list != NULL)
+        {
+            if(new_list == NULL)
+            {
+                prev->next = list;
+                break;
+            }
+            else if(list->val >= prev->val && list->val <= new_list->val)
+            {
+                ListNode* temp = list->next;
+                prev->next = list;
+                list->next = new_list;
+                prev = list;
+                list = temp;
+            }
+            else
+            {
+                prev = new_list;
+                new_list = new_list->next;
+            }
+        }
+    }
+    
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if(lists.size() == 0){
+            return NULL;
+        }
+        
+        ListNode* new_list = new ListNode(INT_MIN);
+        ListNode* head = new_list;
+        
+        for(int i = 0; i < lists.size(); i++)
+        {
+            ListNode* list = lists[i];
+            
+            mergeLists(new_list, list);
+            new_list = head;
+        }
+        
+        return new_list->next;
+    }
+};
