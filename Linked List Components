@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int numComponents(ListNode* head, vector<int>& nums) {
+        if(head == NULL){
+            return 0;
+        }
+        
+        unordered_map <int, bool> m;
+        
+        for(auto i:nums){
+            m[i] = true;
+        }
+        
+        int count = 0;
+        while(head != NULL)
+        {
+            int value = head->val;
+            
+            if(m[value])
+            {
+                while(head != NULL && m[head->val])
+                {
+                    head = head->next;
+                }
+                count++;
+            }
+            else{
+                head = head->next;
+            }
+        }
+        
+        return count;
+    }
+};
