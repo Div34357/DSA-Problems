@@ -1,0 +1,47 @@
+class Solution {
+public:
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        //list empty
+        if(head == NULL){
+            return NULL;
+        }
+        
+        //list not empty
+        ListNode* prev = NULL;
+        ListNode* curr = head;
+        ListNode* after = NULL;
+        
+        //initialising count to iterate through loop
+        int n = 0;
+            
+        //reversing k nodes
+        while(n < k && curr != NULL){
+            after = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = after;
+            n++;
+        }
+        
+        //checking if group to be reversed have length more than or equal to k or not
+        int count = 0;
+        ListNode* temp = curr;
+        while(temp != NULL){
+            temp = temp->next;
+            count++;
+        }
+        //if length is less than k, then return
+        if(count < k){
+            head->next = curr;
+            return prev;
+        }
+        
+        //calling recursion for other parts
+        if(curr != NULL)
+        head->next = reverseKGroup(curr, k);
+        
+        //returning answer
+        return prev;
+        
+    }
+};
