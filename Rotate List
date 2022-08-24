@@ -1,0 +1,45 @@
+class Solution {
+public:
+    
+    int sizeOfList(ListNode* head){
+        int size = 0;
+        while(head != NULL){
+            size++;
+            head = head->next;
+        }
+        
+        return size;
+    }
+    
+    ListNode* rotateRight(ListNode* head, int k) {
+        //head is NULL or list has only one element
+        if(head == NULL || head->next == NULL){
+            return head;
+        }
+        
+        //finding size of list
+        int size = sizeOfList(head);
+        
+        //checking if k is greater than size then iterations would be redundant, so reducing the size of k
+        k = k % size;
+        
+        ListNode* curr = head;
+        ListNode* prev = NULL;
+
+        
+        //finding tail node and connecting it to the head node
+        while(k--)
+        {
+            while(curr->next != NULL){
+                prev = curr;
+                curr = curr->next;
+            }
+            curr->next = head;
+            head = curr;
+            prev->next = NULL;
+            prev = NULL;
+        }
+
+        return head;
+    }
+};
