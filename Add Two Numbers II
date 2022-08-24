@@ -1,0 +1,89 @@
+class Solution {
+public:
+ 
+    int reverseListAndFindSize(ListNode* &head){
+        ListNode *prev = NULL, *after = NULL;
+        int size = 0;
+
+        while(head != NULL){
+            after = head->next;
+            head->next = prev;
+            prev = head;
+            head = after;
+            size++;
+        }
+
+        head = prev;
+        return size;
+    }
+
+    void addNumbers(ListNode* &list1, ListNode* &list2)
+    {
+        ListNode *iter1 = list1, *iter2 = list2, *prev = NULL;
+        int carry = 0;
+
+        while(iter1 != NULL)
+        {
+            int value = 0;
+
+            //if second number is completely traversed
+            if(iter2 != NULL){
+                value += iter2->val;
+            }
+
+            //carry from previous number
+            if(carry > 0){
+                value += carry + iter1->val;
+            }
+            else if(carry == 0){
+                value += iter1->val;
+            }
+
+            int data_to_append = value % 10;
+            carry = value / 10;
+            
+            //appending value to the first list
+            iter1->val = data_to_append;
+
+            prev = iter1;
+            iter1 = iter1->next;
+            
+            if(iter2 != NULL){
+                iter2 = iter2->next;
+            }
+        }
+
+        //even if carry is not 0 after iterating both lists, it means we have to add one more node to the solution so as to make the whole number
+        if(carry > 0){
+            ListNode* new_node = new ListNode(carry);
+            prev->next = new_node;
+        }
+
+    }
+    
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+        if(l1 == NULL){
+            return l2;
+        }
+        if(l2 == NULL){
+            return l1;
+        }
+
+        //finding size to compare longer list, and simultaneously reversing the list too
+        int size1 = reverseListAndFindSize(l1);
+        int size2 = reverseListAndFindSize(l2);
+
+        //whichever list is greater we are adding another list to that list, and returning the answer
+        if(size1 > size2){
+            addNumbers(l1, l2);
+            reverseListAndFindSize(l1);//reversing list so as to revert back the changes done previously
+            return l1;
+        }
+        else{
+            addNumbers(l2, l1);
+            reverseListAndFindSize(l2);
+            return l2;
+        }
+
+    }
+};
