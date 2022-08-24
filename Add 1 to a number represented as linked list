@@ -1,0 +1,70 @@
+class Solution
+{
+    public:
+    
+    void reverseList(Node* &head)
+    {
+        Node *curr = head, *prev = NULL, *after = NULL;
+        
+        while(curr != NULL){
+            after = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = after;
+        }
+        
+        head = prev;
+    }
+    
+    Node* addOne(Node *head) 
+    {
+        if(head == NULL){
+            return head;
+        }
+        
+        //reversing list so that iteration becomes easy
+        reverseList(head);
+        
+        int carry = 0;
+        bool flag = true;
+        Node *curr = head, *prev = NULL;
+        
+        while(curr != NULL)
+        {
+            int value = 0;
+            if(flag == true){
+                //adding 1 to the list
+                value = 1 + curr->data;
+                flag = !flag;
+            }
+            else if(carry > 0){
+                //adding carry from the previous node if present
+                value = curr->data + carry;
+            }
+            else if(carry == 0){
+                value = curr->data;
+            }
+            
+            int value_to_append = value % 10;
+            carry = value / 10;
+            
+            // appending the value of curr
+            curr->data = value_to_append;
+            prev = curr;
+            curr = curr->next;
+        }
+        
+        //if after iterating the loop the carry is not zero it means we have to make another loop to add that into our number
+        if(carry > 0)
+        {
+            Node* new_node = new Node(carry);
+            prev->next = new_node;
+        }
+        
+        //reversing list back to its original state
+        reverseList(head);
+        
+        return head;
+        
+    }
+};
