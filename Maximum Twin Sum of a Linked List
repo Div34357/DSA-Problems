@@ -1,0 +1,57 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head){
+        ListNode *curr = head, *prev = NULL, *after = NULL;
+        
+        while(curr != NULL){
+            after = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = after;
+        }
+        
+        return prev;
+    }
+    
+    int pairSum(ListNode* head) {
+        if(head == NULL){
+            return 0;
+        }
+        
+        ListNode *fast = head->next, *slow = head;
+        
+        //calculating mid of the list
+        while(fast != NULL && fast->next != NULL){
+            fast = fast->next->next;
+            slow = slow->next;
+        }
+        
+        //node from where we have to reverse the list
+        ListNode* reverse_node = slow->next;
+        
+        //reversing the list and joining it to the first part
+        slow->next = reverseList(reverse_node);
+        
+        ListNode* temp = slow->next;
+        int max_sum = INT_MIN;
+        
+        //finding the max answer using two pointer technique
+        while(temp != NULL){
+            max_sum = max(max_sum, (temp->val + head->val));
+            temp = temp->next;
+            head = head->next;
+        }
+        
+        return max_sum;
+    }
+};
