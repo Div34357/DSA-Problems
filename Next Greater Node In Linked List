@@ -1,0 +1,83 @@
+class Solution
+{
+public:
+    void reverseList(ListNode *&head)
+    {
+        ListNode *prev = NULL, *after = NULL;
+
+        while (head != NULL)
+        {
+            after = head->next;
+            head->next = prev;
+            prev = head;
+            head = after;
+        }
+
+        head = prev;
+    }
+
+    vector<int> nextLargerNodes(ListNode *head)
+    {
+        vector<int> answer;
+        stack<int> s;
+
+        //reverse list to iterate from the back
+        reverseList(head);
+
+        //pushing first element, as it would have no next element greater than itself, as in original list, it would be the last element
+        s.push(head->val);
+        answer.push_back(0);
+        head = head->next;
+
+        while (head != NULL)
+        {
+            int front = s.top();
+            int num = head->val;
+
+            //number is less than top of stack so it means top of the stack is the next greater element for that number
+            if (num < front)
+            {
+                s.push(num);
+                answer.push_back(front);
+            }
+            else if (num >= front)
+            {
+                //since the top of stack is smaller than num, so we are poping up the smaller elements until we find the bigger one
+                while (!s.empty())
+                {
+                    if (s.top() <= num)
+                    {
+                        s.pop();
+                    }
+                    else if (s.top() > num)
+                    {
+                        //if we find the bigger element then we push it in our answer list and push the number in the stack
+                        answer.push_back(s.top());
+                        s.push(num);
+                        break;
+                    }
+                    if (s.empty())
+                    {
+                        //if somehow list becomes empty after poping, that means there was no bigger element than the num, so we push 0 in answer, and push the num in stack
+                        answer.push_back(0);
+                        s.push(num);
+                        break;
+                    }
+                }
+            }
+
+            head = head->next;
+        }
+
+        //since we reversed the list, so the answer also got reversed, therefore reversing the answer to get the right one
+        int start = 0, end = answer.size() - 1;
+        while (start < end)
+        {
+            swap(answer[start], answer[end]);
+            start++;
+            end--;
+        }
+
+        return answer;
+    }
+};
