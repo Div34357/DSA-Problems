@@ -1,0 +1,28 @@
+class Solution {
+public:
+    Node* connect(Node* root) {
+        if(root == NULL){
+            return NULL;
+        }
+        
+        Node *curr = root;
+        while(curr && curr->left){
+            Node* nxt = curr;
+            
+            //traversing horizontally after we have connected root->left to root->right node
+            while(true){
+                nxt->left->next = nxt->right;
+                
+                if(nxt->next == NULL){
+                    break;
+                }
+                nxt->right->next = nxt->next->left;
+                nxt = nxt->next;
+            }
+            
+            curr = curr->left;
+        }
+        
+        return root;
+    }
+};
