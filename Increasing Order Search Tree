@@ -1,0 +1,38 @@
+class Solution {
+public:
+    
+    void inorder(TreeNode* root, TreeNode* &new_root, TreeNode* &tail)
+    {
+        if(root == NULL){
+            return;
+        }
+        
+        inorder(root->left, new_root, tail);
+        
+        //making a new node and attaching it to our new Tree
+        TreeNode* temp = new TreeNode(root->val);
+        
+        //if root is NULL then we make new node to root node
+        if(new_root == NULL){
+            new_root = temp;
+            tail = temp;
+        }
+        else{
+            tail->right = temp;
+            tail->left = NULL;
+            tail = temp;
+        }
+            
+        inorder(root->right, new_root, tail);
+    }
+    
+    TreeNode* increasingBST(TreeNode* root) {
+        TreeNode* new_root = NULL;
+        TreeNode* tail = NULL;
+        
+        //doing inorder traversal as it is sorted
+        inorder(root, new_root, tail);
+        
+        return new_root;
+    }
+};
