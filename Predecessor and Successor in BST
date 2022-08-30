@@ -1,0 +1,52 @@
+pair<int, int> predecessorSuccessor(BinaryTreeNode<int> *root, int key)
+{
+    if (root == NULL)
+    {
+        return {-1, -1};
+    }
+
+    int pred = -1, suc = -1;
+
+    //finding key in the tree
+    while (root->data != key)
+    {
+        if (root->data == key)
+        {
+            break;
+        }
+        else if (root->data > key)
+        {
+            suc = root->data;
+            root = root->left;
+        }
+        else if (root->data < key)
+        {
+            pred = root->data;
+            root = root->right;
+        }
+    }
+
+    BinaryTreeNode<int> *left_part = root->left, *right_part = root->right;
+
+    //now the inorder predecessor of the key will be the largest element in the left part of key node
+    if (left_part != NULL)
+    {
+        while (left_part->right != NULL)
+        {
+            left_part = left_part->right;
+        }
+        pred = left_part->data;
+    }
+ 
+    //and the successor of the key will be the smallest element in the part part of key node
+    if (right_part != NULL)
+    {
+        while (right_part->left != NULL)
+        {
+            right_part = right_part->left;
+        }
+        suc = right_part->data;
+    }
+
+    return {pred, suc};
+}
