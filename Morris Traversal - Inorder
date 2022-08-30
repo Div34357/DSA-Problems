@@ -1,0 +1,37 @@
+vclass Solution {
+public:
+    vector<int> inorderTraversal(TreeNode* root) {
+        vector <int> answer;
+        TreeNode* curr = root;
+        
+        TreeNode* pred = NULL;
+        
+        while(curr != NULL)
+        {
+            if(curr->left == NULL){
+                answer.push_back(curr->val);
+                curr = curr->right;
+            }
+            else
+            {
+                pred = curr->left;
+                
+                while(pred->right != NULL && pred->right != curr){
+                    pred = pred->right;
+                }
+                
+                if(pred->right == NULL){
+                    pred->right = curr;
+                    curr = curr->left;
+                }
+                else{
+                    pred->right = NULL;
+                    answer.push_back(curr->val);
+                    curr = curr->right;
+                }
+            }
+        }
+        
+        return answer;
+    }
+};
