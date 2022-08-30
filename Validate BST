@@ -1,0 +1,29 @@
+class Solution {
+public:
+    
+    bool validate(TreeNode* root, long int left, long int right)
+    {
+        if(root == NULL){
+            return true;
+        }
+        
+        if(root->val <= left || root->val >=right){
+            return false;
+        }
+        
+        bool checkLeft = validate(root->left, left, root->val);
+        bool checkRight = validate(root->right, root->val, right);
+        
+        return checkLeft && checkRight;
+    }
+    
+    bool isValidBST(TreeNode* root) {
+        if(root == NULL){
+            return true;
+        }
+        
+        long int left = LONG_MIN, right = LONG_MAX;
+        
+        return validate(root, left, right);
+    }
+};
