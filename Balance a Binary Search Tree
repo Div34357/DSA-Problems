@@ -1,0 +1,55 @@
+class Solution {
+public:
+    
+    TreeNode* buildFromInorder(vector <TreeNode*> &inorder, int start, int end)
+    {
+        if(start > end){
+            return NULL;
+        }
+        
+        int mid = (start + end) / 2;
+        
+        inorder[mid]->left = buildFromInorder(inorder, start, mid - 1);
+        inorder[mid]->right = buildFromInorder(inorder, mid + 1, end);
+        
+        return inorder[mid];
+    }
+    
+    TreeNode* balanceBST(TreeNode* root) {
+        
+        vector <TreeNode*> inorder;
+        
+        //storing the inorder traversal of the tree
+        while(root != NULL)
+        {
+            if(root->left == NULL){
+                inorder.push_back(root);
+                root = root->right;
+            }
+            else
+            {
+                TreeNode* pred = root->left;
+                
+                while(pred->right != NULL && pred->right != root){
+                    pred = pred->right;
+                }
+                
+                if(pred->right == NULL){
+                    pred->right = root;
+                    root = root->left;
+                }
+                else{
+                    inorder.push_back(root);
+                    pred->right = NULL;
+                    root = root->right;
+                }
+            }
+        }  
+        
+        //building tree from inorder traversal
+        int start = 0, end = inorder.size()-1;
+        return buildFromInorder(inorder, start, end);
+
+        
+    }
+};
