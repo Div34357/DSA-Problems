@@ -1,0 +1,63 @@
+//making a sum variable, in which storing the sum from the largest element, and assigning the sum to the elements coming in reverse inorder
+
+//1st solution using Reverse Inorder Morris Traversal
+
+class Solution {
+public:
+    TreeNode* bstToGst(TreeNode* root) {
+
+        int sum = 0;
+        
+        TreeNode* curr = root;
+        
+        while(curr != NULL)
+        {
+            if(curr->right == NULL){
+                sum += curr->val;
+                curr->val = sum;
+                curr = curr->left;
+            }
+            else
+            {
+                TreeNode* pred = curr->right;
+                
+                while(pred->left != NULL && pred->left != curr){
+                    pred = pred->left;
+                }
+                
+                if(pred->left == NULL){
+                    pred->left = curr;
+                    curr = curr->right;
+                }
+                else{
+                    sum += curr->val;
+                    curr->val = sum;
+                    pred->left = NULL;
+                    curr = curr->left;
+                }
+            }
+        }
+        
+        return root;
+    }
+};
+
+//2nd solution using recursion
+
+class Solution {
+public:
+    int sum = 0;
+    
+    TreeNode* convertBST(TreeNode* root) {
+        if(root == NULL){
+            return NULL;
+        }
+        
+        convertBST(root->right);
+        sum += root->val;
+        root->val = sum;
+        convertBST(root->left);
+        
+        return root;
+    }
+};
