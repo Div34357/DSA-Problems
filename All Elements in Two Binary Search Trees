@@ -1,0 +1,51 @@
+class Solution {
+public:
+    
+    void inorder(TreeNode* root, vector <int> &v)
+    {
+        if(root == NULL){
+            return;
+        }
+        
+        inorder(root->left, v);
+        v.push_back(root->val);
+        inorder(root->right, v);
+    }
+    
+    vector<int> getAllElements(TreeNode* root1, TreeNode* root2) {
+        vector <int> answer;
+        
+        vector <int> f, s;
+        
+        //storing inorder of both trees in separate vectors
+        inorder(root1, f);
+        inorder(root2, s);
+        
+        int i = 0, j = 0;
+        
+        //merging both vectors and storing them in answer vector
+        while( i != f.size() && j != s.size()){
+            if(f[i] <= s[j]){
+                answer.push_back(f[i]);
+                i++;
+            }
+            else{
+                answer.push_back(s[j]);
+                j++;
+            }
+        }
+        
+        if(i == f.size()){
+            for(j; j < s.size(); j++){
+                answer.push_back(s[j]);
+            }
+        }
+        if(j == s.size()){
+            for(i; i < f.size(); i++){
+                answer.push_back(f[i]);
+            }
+        }
+        
+        return answer;
+    }
+};
