@@ -1,0 +1,50 @@
+class Solution
+{
+public:
+    int kthSmallest(TreeNode *root, int k)
+    {
+
+        int ans = -1;
+
+        //Iterating using Morris Traversal
+        while (root != NULL)
+        {
+            if (root->left == NULL)
+            {
+                --k;
+                if (k == 0){
+                    //if k becomes 0, it means we have reached the kth smallest element
+                    ans = root->val;
+                }
+                cout << root->val;
+                root = root->right;
+            }
+            else
+            {
+                TreeNode *pred = root->left;
+
+                while (pred->right != NULL && pred->right != root)
+                {
+                    pred = pred->right;
+                }
+
+                if (pred->right == NULL)
+                {
+                    pred->right = root;
+                    root = root->left;
+                }
+                else
+                {
+                    --k;
+                    if (k == 0){
+                        ans = root->val;
+                    }
+                    cout << root->val;
+                    pred->right = NULL;
+                    root = root->right;
+                }
+            }
+        }
+        return ans;
+    }
+};
