@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int findSecondMinimumValue(TreeNode* root) {
+        set <int> s; //for storing unique elements
+        
+        //morris traversal
+        while(root != NULL)
+        {
+            if(root->left == NULL){
+                s.insert(root->val);
+                root = root->right;
+            }
+            else
+            {
+                TreeNode* pred = root->left;
+                
+                while(pred->right != NULL && pred->right != root)
+                    pred = pred->right;
+                
+                if(pred->right == NULL){
+                    pred->right = root;
+                    root = root->left;
+                }
+                else{
+                    s.insert(root->val);
+                    pred->right = NULL;
+                    root = root->right;
+                }
+            }
+        }
+        
+        int count = 1;
+        
+        //finding 2nd min element and returning it
+        for(auto i:s){
+            if(count == 2){
+                return i;
+            }
+            
+            count++;
+        }
+        
+        return -1;
+    }
+};
