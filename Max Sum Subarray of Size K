@@ -1,0 +1,22 @@
+long maximumSumSubarray(int K, vector<int> &Arr , int N){
+        // code here 
+        long starting_index = 0, last_index = 0, max_sum = LONG_MIN, temp_sum = 0;
+        
+        while(last_index < N)
+        {
+            long window_size = last_index - starting_index + 1;
+            temp_sum += Arr[last_index];
+            
+            if(window_size < K){
+                last_index++;
+            }
+            else{
+                max_sum = max(temp_sum, max_sum);
+                last_index++;
+                temp_sum -= Arr[starting_index];
+                starting_index++;
+            }
+        }
+        
+        return max_sum;
+    }
