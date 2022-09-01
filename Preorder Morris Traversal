@@ -1,0 +1,33 @@
+vector <int> preorder(Node* root)
+{
+  // Your code here
+  vector <int> answer;
+  
+  while(root != NULL)
+  {
+      if(root->left == NULL){
+          answer.push_back(root->data);
+          root = root->right;
+      }
+      else
+      {
+          Node* pred = root->left;
+          
+          while(pred->right != NULL && pred->right != root)
+          pred = pred->right;
+          
+          if(pred->right == NULL){
+              answer.push_back(root->data);
+              pred->right =root;
+              root = root->left;
+          }
+          else{
+              pred->right = NULL;
+              root = root->right;
+          }
+      }
+  }
+   
+  return answer;
+
+}
