@@ -1,0 +1,38 @@
+vector<long long> printFirstNegativeInteger(long long int A[],
+                                             long long int N, long long int K) {
+                                                 
+        vector <long long> answer;
+        
+        int start = 0, end = 0;
+        queue <long long> negative_nums;
+        
+        while(end < N)
+        {
+            long long  window_size = (end - start) + 1;
+            
+            if(A[end] < 0){
+                negative_nums.push(A[end]);
+            }
+            
+            if(window_size < K){
+                end++;
+            }
+            else{
+                if(!negative_nums.empty()){
+                    answer.push_back(negative_nums.front());
+                }
+                else{
+                    answer.push_back(0);
+                }
+                
+                end++;
+                
+                if(negative_nums.front() == A[start])
+                negative_nums.pop();
+                start++;
+            }
+        }
+        
+        return answer;
+                                                 
+ }
