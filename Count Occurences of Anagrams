@@ -1,0 +1,37 @@
+int search(string pat, string txt) {
+	    // code here
+	    unordered_map <char, int> m, m1;
+	    
+	    for(int i = 0; i < pat.length(); i++){
+	        m[pat[i]]++;
+	    }
+	    
+	    int start = 0, end = 0, count = 0;
+	    
+	    while(end < txt.length())
+	    {
+	        int window_size = end - start + 1;
+	        
+	        m1[txt[end]]++;
+	        
+	        if(window_size < pat.length()){
+	            end++;
+	        }
+	        else{
+	            
+	            if(m == m1){
+	                count++;
+	            }
+	            
+	            end++;
+	            m1[txt[start]]--;
+	            if(m1[txt[start]] == 0)
+	            m1.erase(txt[start]);
+	            
+	            start++;
+	        }
+	    }
+	    
+	    return count;
+	    
+	}
