@@ -1,0 +1,81 @@
+//map solution
+
+class Solution {
+public:
+    int numberOfSubstrings(string s) {
+        int answer = 0;
+
+        int start = 0, end = 0, n = s.length();
+        unordered_map <char, int> chars;
+
+        while(end != n)
+        {
+            char num = s[end];
+            chars[num]++;
+
+                while(chars['a'] && chars['b'] && chars['c']){
+                    answer += n - end;
+                    chars[s[start]]--;
+                    start++;
+                }
+            
+            end++;
+            
+        }
+
+        return answer;
+    }
+};
+
+
+
+//solution without map
+
+class Solution {
+public:
+
+    //using this increment and decrement functions as a map
+    void increment(char ch, int &a, int &b, int &c){
+        if(ch == 'a')
+        a++;
+        else if(ch == 'b')
+        b++;
+        else
+        c++;
+    }
+
+    void decrement(char ch, int &a, int &b, int &c){
+        if(ch == 'a')
+        a--;
+        else if(ch == 'b')
+        b--;
+        else
+        c--;
+    }
+
+    int numberOfSubstrings(string s) {
+        int answer = 0;
+
+        int a_count = 0, b_count = 0, c_count = 0, start = 0, end = 0, n = s.length();
+        increment(s[0], a_count, b_count, c_count);
+
+        while(end != n)
+        {
+            if(a_count && b_count && c_count){
+                answer += n - end;
+
+                decrement(s[start], a_count, b_count, c_count);
+                start++;
+            }
+            else{
+                end++;
+                if(end == n)
+                    break;
+                
+                increment(s[end], a_count, b_count, c_count);
+            }
+        }
+
+        return answer;
+    }
+};
