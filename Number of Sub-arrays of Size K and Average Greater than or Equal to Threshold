@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int numOfSubarrays(vector<int>& arr, int k, int threshold) {
+        int answer = 0;
+
+        int start = 0, end = 0, n = arr.size(), subarray_sum = 0, avg;
+
+        while(end != n)
+        {
+            subarray_sum += arr[end];
+            int subarray_length = end - start + 1;
+
+            if(subarray_length == k)
+            {
+                avg = subarray_sum / k;
+
+                if(avg >= threshold){
+                    answer++;
+                }
+
+                subarray_sum -= arr[start];
+                start++;
+            }
+
+            end++;
+        }
+
+        return answer;
+    }
+};
