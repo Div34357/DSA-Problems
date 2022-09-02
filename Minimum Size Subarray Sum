@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+
+        int start = 0, end = 0, count = INT_MAX, sum = 0;
+
+        while(end != nums.size())
+        {
+            //adding the numbers
+            sum += nums[end];
+
+            if(sum >= target)
+            {
+                //if sum gets greater than target, then inputing the size of that subarray in count variable
+                count = min(count, end - start + 1);
+                
+                while(sum >= target && start < end)
+                {
+                    //decreasing the sum so that it becomes less than target, and then we can increment end again
+                    sum = sum - nums[start];
+                    start++;
+                    
+                    //checking if subarray of sum greater than k is less than the previous subarray
+                    if(sum >= target)
+                    count = min(count, end - start + 1);
+                }
+            }
+
+            end++;
+        }
+        
+        if(count == INT_MAX)
+            return 0;
+
+        return count;
+    }
+};
