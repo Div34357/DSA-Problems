@@ -1,0 +1,32 @@
+//our approach in this question is to take the zeroes in the array as 1 only until the k condition is satisfied within that subarray, otherwise if total no. of zeroes increase in the array then we have to slide the window until k condition gets satisfied
+
+class Solution {
+public:
+    int longestOnes(vector<int>& nums, int k) {
+        int answer = 0;
+
+        int count = 0, start = 0, end = 0, total_zeroes = 0, n = nums.size();
+
+        while(end != n)
+        {
+            int num = nums[end];
+
+            if(num == 0){
+                total_zeroes++;
+            }
+            
+            while(total_zeroes > k){
+                if(nums[start] == 0){
+                    total_zeroes--;
+                }
+
+                start++;
+            }
+            
+            answer = max(answer, end - start + 1);
+            end++;
+        }
+
+        return answer;
+    }
+};
