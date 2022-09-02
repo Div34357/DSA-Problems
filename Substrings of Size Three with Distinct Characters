@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int countGoodSubstrings(string s) {
+        int answer = 0;
+        
+        int first_ele = s[0], second_ele = s[1], third_ele = s[2], n = s.size();
+        
+        for(int i = 3; i <= n; i++)
+        {
+            if(first_ele != second_ele && second_ele != third_ele && third_ele != first_ele){
+                answer++;
+            }
+            
+            first_ele = second_ele;
+            second_ele = third_ele;
+            third_ele = s[i];
+        }
+        
+        return answer;
+    }
+};
