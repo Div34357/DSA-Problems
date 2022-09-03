@@ -1,0 +1,29 @@
+class Solution {
+public:
+    
+    int solve(TreeNode* root, int &answer)
+    {
+        if(root == NULL){
+            return 0;
+        }
+        
+        //getting answer from left and right side
+        int left = solve(root->left, answer);
+        int right = solve(root->right, answer);
+        
+        //you know the approach right, its the same approact you thought off
+        int temp = max(max(left, right) + root->val, root->val);
+        int res = max(temp, left + right + root->val);
+        
+        answer = max(answer, res);
+        
+        return temp;
+    }
+    
+    int maxPathSum(TreeNode* root) {
+        int answer = INT_MIN;
+        solve(root, answer);
+        
+        return answer;
+    }
+};
