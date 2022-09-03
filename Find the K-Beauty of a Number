@@ -1,0 +1,40 @@
+class Solution {
+public:
+
+    int divisorSubstrings(int num, int k) {
+        int answer = 0;
+
+        //converting num to string
+        string num_str = to_string(num);
+        
+        int start = 0, end = 0, n = num_str.length();
+
+        while(end != n){
+            //window size is the number of digits in the substring
+            int window_size = end - start + 1;
+
+            if(window_size < k){
+                end++;
+            }
+            
+            //it means that we have the substring of length k and now we have to check if it divides num
+            if(window_size == k){
+
+                //extracting the substring and converting it to a valid integer
+                string sub_str = num_str.substr(start, k);
+                int sub_num = stoi(sub_str);
+
+                //checking if our num perfectly divides the giver number
+                if(sub_num != 0 && num % sub_num == 0){
+                    answer++;
+                }
+
+                //incrementing or sliding the window by 1 place
+                start++;
+                end++;
+            }
+        }
+
+        return answer;
+    }
+};
