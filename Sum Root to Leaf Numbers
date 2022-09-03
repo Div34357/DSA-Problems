@@ -1,0 +1,31 @@
+class Solution {
+public:
+
+    void solve(TreeNode* root, int temp_sum, int &total_sum)
+    {
+        if(root == NULL){
+            return;
+        }
+
+        //forming the number
+        int num = root->val;
+        temp_sum = temp_sum*10 + num;
+
+        //traversed one of the paths
+        if(root->left == NULL && root->right == NULL){
+            total_sum += temp_sum;
+        }
+
+        solve(root->left, temp_sum, total_sum);
+        solve(root->right, temp_sum, total_sum);
+    }
+
+    int sumNumbers(TreeNode* root) {
+        int total_sum = 0, temp_sum = 0;
+        
+        //temp_sum for storing the sum of a single path, and total_sum is for sum of all the paths
+        solve(root, temp_sum, total_sum);
+        
+        return total_sum;
+    }
+};
