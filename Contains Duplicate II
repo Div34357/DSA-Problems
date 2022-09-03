@@ -1,0 +1,43 @@
+class Solution {
+public:
+    
+    bool ifExists(unordered_map <int, bool> &m, int num){
+        if(m[num]){
+            return true;
+        }
+        else{
+            m[num] = true;
+        }
+        
+        return false;
+    }
+    
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        unordered_map <int, bool> m;
+        
+        int start = 0, end = 0, n = nums.size();
+        
+        while(end != n)
+        {
+            int window_size = end - start;
+            
+            if(window_size < k)
+            {
+                if(ifExists(m, nums[end]))
+                    return true;
+            }
+            else if(window_size == k)
+            {
+                if(ifExists(m, nums[end]))
+                    return true;
+                
+                m.erase(nums[start]);
+                start++;
+            }
+            
+            end++;
+        }
+        
+        return false;
+    }
+};
