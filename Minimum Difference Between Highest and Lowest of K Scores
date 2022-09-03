@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int minimumDifference(vector<int>& nums, int k) {
+        sort(nums.begin(), nums.end());
+        
+        int start = 0, end = 0, answer = INT_MAX, diff = 0, n = nums.size();
+        
+        while(end != n){
+            int window_size = end - start + 1;
+            
+            if(window_size == k)
+            {
+                diff = nums[end] - nums[start];
+                answer = min(diff, answer);
+                
+                start++;
+            }
+            
+            end++;
+        }
+        
+        return answer;
+    }
+};
