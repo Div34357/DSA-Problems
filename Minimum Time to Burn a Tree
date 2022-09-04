@@ -1,0 +1,77 @@
+class Solution {
+  public:
+
+    void mapAncestors(Node* root, unordered_map <Node*, Node*> &ancestors, Node* &target_node, int target)
+    {
+        if(root == NULL){
+            return;
+        }
+
+        if(root->left)
+        ancestors[root->left] = root;
+        if(root->right)
+        ancestors[root->right] = root;
+
+        if(root->data == target){
+            target_node = root;
+        }
+
+        mapAncestors(root->left, ancestors, target_node, target);
+        mapAncestors(root->right, ancestors, target_node, target);
+    }
+
+    int minTime(Node* root, int target) 
+    {
+        Node* target_node = NULL;
+
+        unordered_map <Node*, Node*> ancestors;
+        unordered_map <Node*, bool> visited;
+
+        mapAncestors(root, ancestors, target_node, target);
+
+        queue <Node*> nodes_to_burn;
+        nodes_to_burn.push(target_node);
+        nodes_to_burn.push(NULL);
+
+        ancestors[root] = NULL;
+
+        int time_taken = 0;
+
+        while(!nodes_to_burn.empty())
+        {
+            Node* current_node = nodes_to_burn.front();
+            nodes_to_burn.pop();
+
+            visited[current_node] = true;
+            
+
+            
+            if(current_node == NULL){
+                
+                if(!nodes_to_burn.empty()){
+                    time_taken++;
+                    nodes_to_burn.push(NULL);
+                }
+            }
+            
+            else
+            {
+                Node *left = current_node->left, *right = current_node->right, *parent = ancestors[current_node];
+
+                if(left && !visited[left]){
+                    nodes_to_burn.push(left);
+                }
+                if(right && !visited[right]){
+                    nodes_to_burn.push(right);
+                }
+                if(parent && !visited[parent]){
+                nodes_to_burn.push(parent);
+                }
+            }
+
+        }
+
+        return time_taken;
+        
+    }
+};
