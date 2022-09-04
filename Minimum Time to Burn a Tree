@@ -68,10 +68,8 @@ class Solution {
                 nodes_to_burn.push(parent);
                 }
             }
-
         }
 
         return time_taken;
-        
     }
 };
