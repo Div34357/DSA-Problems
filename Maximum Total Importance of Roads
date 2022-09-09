@@ -1,0 +1,33 @@
+class Solution {
+public:
+
+    void create_adj_list(vector<vector<int>>& roads, vector <int> &totalRoadsConnectedToRoad)
+    {
+        for(auto &road : roads)
+        {
+            int u = road[0];
+            int v = road[1];
+
+            totalRoadsConnectedToRoad[u]++;
+            totalRoadsConnectedToRoad[v]++;
+        }
+    }
+
+    long long maximumImportance(int n, vector<vector<int>>& roads) {
+        vector <int> totalRoadsConnectedToRoad(n, 0);
+        long long answer = 0;
+
+        create_adj_list(roads, totalRoadsConnectedToRoad);
+
+        sort(totalRoadsConnectedToRoad.begin(), totalRoadsConnectedToRoad.end());
+
+        for(int i = 0; i < n; i++)
+        {
+            int num = totalRoadsConnectedToRoad[i];
+
+            answer += (long long)num * (i + 1);
+        }
+
+        return answer;
+    }
+};
