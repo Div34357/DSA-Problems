@@ -1,0 +1,34 @@
+class Solution {
+private: 
+    int depthOfX = 0, depthOfY = 0, parentOfX = -1, parentOfY = -1;
+
+    void find_depth_and_parent(TreeNode* root, int x, int y, int depth, int parent){
+        if(root == NULL){
+            return;
+        }
+
+        if(root->val == x){
+            depthOfX = depth;
+            parentOfX = parent;
+        }
+        else if(root->val == y){
+            depthOfY = depth;
+            parentOfY = parent;
+        }
+
+        find_depth_and_parent(root->left, x, y, depth + 1, root->val);
+        find_depth_and_parent(root->right, x, y, depth + 1, root->val);
+    }
+
+public:
+    bool isCousins(TreeNode* root, int x, int y) {
+
+        find_depth_and_parent(root, x, y, 0, -1);
+
+        if(depthOfX == depthOfY && parentOfX != parentOfY){
+            return true;
+        }
+
+        return false;
+    }
+};
