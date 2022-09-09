@@ -1,0 +1,50 @@
+#include <bits/stdc++.h>
+
+void create_adj_list(unordered_map <int, vector <int>> &adjList, vector<vector<int>> &edges)
+{
+    for(auto &edge : edges){
+        int u = edge[0];
+        int v = edge[1];
+        
+        adjList[u].push_back(v);
+    }
+}
+
+void dfs_traversal(unordered_map <int, vector <int>> &adjList, vector <bool> &isVisited, vector <int> &answer, int num){
+    isVisited[num] = true;
+    
+    for(auto &neighbour : adjList[num]){
+        if(!isVisited[neighbour]){
+            dfs_traversal(adjList, isVisited, answer, neighbour);
+        }
+    }
+    answer.push_back(num);
+}
+
+void reverse(vector <int> &v)
+{
+    int s = 0;
+    int e = v.size() - 1;
+    
+    while(s < e){
+        swap(v[s++], v[e--]);
+    }
+}
+
+vector<int> topologicalSort(vector<vector<int>> &edges, int v, int e)  {
+    unordered_map <int, vector <int>> adjList;
+    vector <bool> isVisited(v, false);
+    vector <int> answer;
+    
+    create_adj_list(adjList, edges);
+    
+    for(int i = 0; i < v; i++){
+        if(!isVisited[i]){
+            dfs_traversal(adjList, isVisited, answer, i);
+        }
+    }
+    
+    reverse(answer);
+    
+    return answer;
+}
