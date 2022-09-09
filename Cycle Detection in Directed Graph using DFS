@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+
+void create_adj_list(unordered_map <int, vector <int>> &adjList, vector < pair < int, int >> &edges)
+{
+    for(auto &edge : edges){
+        int u = edge.first;
+        int v = edge.second;
+        
+        adjList[u].push_back(v);
+    }
+}
+
+bool dfs_traversal(unordered_map <int, vector <int>> &adjList, vector <bool> &isVisited, vector <bool> &dfsVisited, int num)
+{
+    isVisited[num] = true;
+    dfsVisited[num] = true;
+    
+    for(auto &neighbour : adjList[num])
+    {
+        if(!isVisited[neighbour]){
+            bool isCyclePresent = dfs_traversal(adjList, isVisited, dfsVisited, neighbour);
+            if(isCyclePresent){
+                return true;
+            }
+            
+        }
+        else if(dfsVisited[neighbour]){
+            return true;
+        }
+    }
+    
+    dfsVisited[num] = false;
+    return false;
+}
+
+int detectCycleInDirectedGraph(int n, vector < pair < int, int >> & edges) {
+    unordered_map <int, vector <int>> adjList;
+    vector <bool> isVisited(n, false), dfsVisited(n, false);
+    
+    create_adj_list(adjList, edges);
+    
+    for(int i = 1; i <= n; i++)
+    {
+        if(!isVisited[i])
+        {
+            bool isCyclePresent = dfs_traversal(adjList, isVisited, dfsVisited, i);
+            if(isCyclePresent){
+                return 1;
+            }
+        }
+    }
+    
+    return 0;
+}
