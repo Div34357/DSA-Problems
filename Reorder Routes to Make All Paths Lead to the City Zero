@@ -1,0 +1,54 @@
+class Solution {
+public:
+    
+    void create_adj_list(set <pair <int, int>> &adjList, unordered_map <int, vector <int>> &undirectedAdjList, vector<vector<int>>& connections){
+        for(auto &edge : connections)
+        {
+            int u = edge[0];
+            int v = edge[1];
+
+            adjList.insert({u, v});
+
+            undirectedAdjList[u].push_back(v);
+            undirectedAdjList[v].push_back(u);
+        }
+    }
+
+    void bfsTraversal(set <pair <int, int>> &adjList, unordered_map <int, vector <int>> &undirectedAdjList, int &answer, int n)
+    {
+        vector <bool> isVisited(n, false);
+        queue <int> q;
+
+        q.push(0);
+        while(!q.empty())
+        {
+            int currentNum = q.front();
+            q.pop();
+
+            isVisited[currentNum] = true;
+
+            for(auto node : undirectedAdjList[currentNum])
+            {
+                if(!isVisited[node])
+                {
+                    if(adjList.count({currentNum, node})){
+                        answer++;
+                    }
+                    q.push(node);
+                }
+            }
+        }
+    }
+
+    int minReorder(int n, vector<vector<int>>& connections) {
+        unordered_map <int, vector <int>> undirectedAdjList;
+        set <pair <int, int>> adjList;
+        int answer = 0;
+
+        create_adj_list(adjList, undirectedAdjList, connections);
+
+        bfsTraversal(adjList, undirectedAdjList, answer, n);
+
+        return answer;
+    }
+};
