@@ -1,0 +1,62 @@
+#include <bits/stdc++.h>
+
+void create_adj_list(unordered_map <int, vector <int>> &adjList, vector<vector<int>>& edges)
+{
+    for(auto &edge : edges){
+        int u = edge[0];
+        int v = edge[1];
+        
+        adjList[u].push_back(v);
+        adjList[v].push_back(u);
+    }
+}
+
+bool bfs(unordered_map <int, vector <int>> &adjList, unordered_map <int, bool> &isVisited, unordered_map <int, int> &parent, int num)
+{
+    queue <int> q;
+    q.push(num);
+    parent[num] = -1;
+    
+    while(!q.empty())
+    {
+        int currentNum = q.front();
+        q.pop();
+        
+        isVisited[currentNum] = true;
+        
+        for(auto &node : adjList[currentNum]){
+            if(!isVisited[node]){
+                parent[node] = currentNum;
+                q.push(node);
+            }
+            else if(node != parent[currentNum]){
+                return true;
+            }
+        }
+    }
+    
+    return false;
+}
+
+string cycleDetection (vector<vector<int>>& edges, int n, int m)
+{
+    unordered_map <int, vector <int>> adjList;
+    unordered_map <int, bool> isVisited;
+    unordered_map <int, int> parent;
+    
+    //creating the adjacency list
+    create_adj_list(adjList, edges);
+    
+    //checking for cycle in each and every component of the graph
+    for(int i = 1; i <= n; i++)
+    {
+        if(!isVisited[i]){
+            bool isCyclePresent = bfs(adjList, isVisited, parent, i);
+            if(isCyclePresent){
+                return "Yes";
+            }
+        }
+    }
+    
+    return "No";
+}
