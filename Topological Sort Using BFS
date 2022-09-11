@@ -1,0 +1,53 @@
+#include <bits/stdc++.h>
+
+void create_adj_list(vector<vector<int>> &edges, unordered_map <int, vector <int>> &adjList, vector <int> &inDegree)
+{
+    for(auto &edge : edges)
+    {
+        int u = edge[0], v = edge[1];
+        
+        adjList[u].push_back(v);
+        inDegree[v]++;
+    }
+}
+
+void bfs_traversal(unordered_map <int, vector <int>> &adjList, vector <int> &inDegree, vector <int> &answer)
+{
+    queue <int> q;
+    
+    for(int i = 0; i < inDegree.size(); i++){
+        if(inDegree[i] == 0){
+            q.push(i);
+        }
+    } 
+    
+    while(!q.empty())
+    {
+        int currentNum = q.front();
+        q.pop();
+        
+        answer.push_back(currentNum);
+
+        for(auto &neighbour : adjList[currentNum])
+        {
+            inDegree[neighbour]--;
+            
+            if(inDegree[neighbour] == 0){
+                q.push(neighbour);
+            }
+        }    
+    }
+}
+
+
+vector<int> topologicalSort(vector<vector<int>> &edges, int v, int e)  
+{
+    unordered_map <int, vector <int>> adjList;
+    vector <int> inDegree(v, 0), answer;
+    
+    create_adj_list(edges, adjList, inDegree);
+    
+    bfs_traversal(adjList, inDegree, answer);
+    
+    return answer;
+}
