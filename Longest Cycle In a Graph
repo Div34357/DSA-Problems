@@ -1,0 +1,51 @@
+class Solution {
+public:
+    
+    void totalSizeOfCycle(vector <int> &cycleNodes, int &num, int &length) {
+        int count = 0;
+        for(auto &i : cycleNodes) {
+            if(i == num) {
+                break;
+            }
+            else{
+                count++;
+            }
+        }
+        
+        length = cycleNodes.size() - count;
+    }
+    
+    void dfs(vector <int> &edges, vector <bool> &isVisited, int num, vector <int> &cycleNodes, int &length, vector <int> &dfsVisited) {
+        isVisited[num] = true;
+        cycleNodes.push_back(num);
+        dfsVisited[num] = true;
+        
+        if(edges[num] != -1 && !isVisited[edges[num]]) {
+            dfs(edges, isVisited, edges[num], cycleNodes, length, dfsVisited);
+        }
+        else if(edges[num] != -1 && dfsVisited[edges[num]]) {
+            totalSizeOfCycle(cycleNodes, edges[num], length);
+            return;
+        }
+        
+        dfsVisited[num] = false;
+    }
+    
+    int longestCycle(vector<int>& edges) {
+        int n = edges.size();
+        vector <bool> isVisited(n, false);
+        vector <int> dfsVisited(n, false);
+        int maxLength = -1;
+        
+        for(int i = 0; i < n; i++) {
+            if(!isVisited[i]) {
+                vector <int> cycleNodes;
+                int length = INT_MIN;
+                dfs(edges, isVisited, i, cycleNodes, length, dfsVisited);
+                maxLength = max(length, maxLength);
+            }
+        }
+        
+        return maxLength;
+    }
+};
