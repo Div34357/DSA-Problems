@@ -1,0 +1,40 @@
+class Solution {
+private:
+    
+    int mod = 1000000007;
+    
+    void findTotalSum(TreeNode* root, int &sum) {
+        if(!root) {
+            return;
+        }
+        sum += root->val;
+        findTotalSum(root->left, sum);
+        findTotalSum(root->right, sum);
+    }
+    
+    long long int findMaxProduct(TreeNode* root, int sum, long long int &maxSum) {
+        if(!root) {
+            return 0;
+        }
+        
+        long long int leftSum = findMaxProduct(root->left, sum, maxSum);
+        long long int rightSum = findMaxProduct(root->right, sum, maxSum);
+        
+        maxSum = max(maxSum, max(((sum - rightSum) * rightSum), ((sum - leftSum) * leftSum)));
+        
+        return rightSum + leftSum + root->val;
+    }
+    
+public:
+    int maxProduct(TreeNode* root) {
+        int sum = 0;
+        findTotalSum(root, sum);
+        
+        long long int maxSum = 0;
+        
+        findMaxProduct(root, sum, maxSum);
+        
+        return maxSum % mod;
+        
+    }
+};
