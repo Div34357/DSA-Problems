@@ -1,0 +1,54 @@
+class Solution {
+private:
+    
+    int dfs(unordered_map <int, vector <int>> &children, vector <int> &totalChildren, int num) {
+        
+        for(auto &child : children[num]) {
+            totalChildren[num] += dfs(children, totalChildren, child);
+        }
+        
+        return totalChildren[num] + 1;
+    }
+    
+public:
+    int countHighestScoreNodes(vector<int>& parents) {
+        unordered_map <int, vector <int>> children;
+        int n = parents.size();
+        
+        for(int i = 0; i < n; i++) {
+            children[parents[i]].push_back(i);
+        }
+        
+        vector <int> totalChildren(n, 0);
+        
+        dfs(children, totalChildren, 0);
+        
+        long long int maxProduct = INT_MIN, answer = 0;
+        
+        for(int i = 0; i < n; i++) {
+            long long int product = 1, sum = 0;
+            for(auto &j : children[i]) {
+                product = product * (totalChildren[j] + 1);
+                sum += totalChildren[j] + 1;
+            }
+            
+            int totalLeft = n - sum - 1;
+            
+            if(totalLeft != 0) {
+                product *= totalLeft;
+            }
+            
+            if(product == maxProduct) {
+                answer++;
+            }
+            else if(product > maxProduct) {
+                answer = 1;
+                maxProduct = product;
+            }
+            
+            
+        }
+        
+        return answer;
+    }
+};
