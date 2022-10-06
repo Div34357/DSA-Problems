@@ -1,0 +1,42 @@
+class Solution {
+private:
+    
+    TreeNode* solve(TreeNode* root, unordered_map <int, bool> &toDelete, vector <TreeNode*> &answer) {
+        
+        if(!root) {
+            return NULL;
+        }
+        
+        root->left = solve(root->left, toDelete, answer);
+        root->right = solve(root->right, toDelete, answer);
+        
+        if(toDelete[root->val]) {
+            if(root->left) {
+                answer.push_back(root->left);
+            }
+            if(root->right) {
+                answer.push_back(root->right);
+            }
+            return NULL;
+        }
+        
+        return root;
+    }
+    
+public:
+    vector<TreeNode*> delNodes(TreeNode* root, vector<int>& to_delete) {
+        unordered_map <int, bool> toDelete;
+        
+        for(auto &i : to_delete) {
+            toDelete[i] = true;
+        }
+        
+        vector <TreeNode*> answer;
+        if(!toDelete[1])
+        answer.push_back(root);
+        
+        solve(root, toDelete, answer);
+        
+        return answer;
+    }
+};
