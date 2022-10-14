@@ -1,0 +1,32 @@
+class Solution {
+private:
+    
+    int solve(TreeNode* root, bool canRob, unordered_map <TreeNode*, int> &dp) {
+        if(!root) {
+            return 0;
+        }
+                
+        if(dp[root] != NULL) {
+            return dp[root];
+        }
+        
+        int inc = root->val;
+        
+        if(root->left) {
+            inc += solve(root->left->left, canRob, dp) + solve(root->left->right, canRob, dp);
+        }
+        if(root->right) {
+            inc += solve(root->right->left, canRob, dp) + solve(root->right->right, canRob, dp);
+        }
+        
+        int exc = solve(root->left, true, dp) + solve(root->right, true, dp);
+        
+        return dp[root] = max(inc, exc);
+    }
+    
+public:
+    int rob(TreeNode* root) {
+        unordered_map <TreeNode*, int> dp;
+        return solve(root, true, dp);
+    }
+};
